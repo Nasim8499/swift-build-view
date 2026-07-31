@@ -1,0 +1,50 @@
+[
+  {
+    "id": "thames-four-square-premiums",
+    "date": "2026-07-27",
+    "category": "News",
+    "title": "Thames Four Square and owner penalised over $120,000 migrant worker premiums",
+    "description": "A Thames Four Square and its owner have been ordered by the Employment Relations Authority (ERA) to pay $44,000 in penalties after making 2 migrant workers pay a total of $120,000 in premiums for their jobs.",
+    "tag": null
+  },
+  {
+    "id": "horticulture-director-fined",
+    "date": "2026-07-02",
+    "category": "News",
+    "title": "Horticulture company and director fined $135,000 for migrant worker breaches",
+    "description": "A horticulture company and its director have been ordered to pay $135,000 in penalties after the ERA found they breached minimum employment standards affecting 4 migrant workers.",
+    "tag": "Migrant exploitation"
+  },
+  {
+    "id": "auckland-restaurant-exploitation",
+    "date": "2026-06-24",
+    "category": "News",
+    "title": "Auckland restaurant and owner must pay $377,000 for exploiting migrant workers",
+    "description": "An Auckland restaurant has been ordered by the ERA to pay almost $200,000 in wage arrears to seven employees, while the company's sole director was penalised $177,300 for exploiting the workers.",
+    "tag": "Migrant exploitation"
+  },
+  {
+    "id": "era-changes-in-force",
+    "date": "2026-02-21",
+    "category": "News",
+    "title": "Employment Relations Act changes take effect today",
+    "description": "A series of changes to the Employment Relations Act come into force today, following the passing of the Employment Relations Amendment Act 2025.",
+    "tag": null
+  },
+  {
+    "id": "wp-check-launch",
+    "date": "2026-01-15",
+    "category": "Media release",
+    "title": "WP Check launches for employers verifying work agreements and entitlements",
+    "description": "Employers can now use WP Check (Work Agreement & Entitlement Verification) to confirm an employee's work agreement details and minimum entitlements before employment begins.",
+    "tag": "WP Check"
+  },
+  {
+    "id": "minimum-wage-review",
+    "date": "2025-12-08",
+    "category": "Update",
+    "title": "Annual minimum wage review consultation opens",
+    "description": "Consultation is now open on the annual minimum wage review. Employers, employees and representative groups are invited to make submissions.",
+    "tag": null
+  }
+]
