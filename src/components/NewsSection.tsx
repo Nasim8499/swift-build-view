@@ -24,7 +24,7 @@ function Skeleton() {
 }
 
 export default function NewsSection({ limit = 4 }: { limit?: number }) {
-  const { data, isLoading, isError } = useQuery(newsQueryOptions(limit));
+  const { data, isLoading, isError, refetch, isFetching } = useQuery(newsQueryOptions(limit));
 
   return (
     <section className="py-10 sm:py-12 bg-white">
@@ -46,10 +46,23 @@ export default function NewsSection({ limit = 4 }: { limit?: number }) {
         {isLoading && <Skeleton />}
 
         {isError && (
-          <p role="alert" className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-4">
-            We couldn&apos;t load news and updates right now. Please try again later.
-          </p>
+          <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+            <p className="font-semibold">We couldn&apos;t load news and updates right now.</p>
+            <p className="mt-1 text-red-700">This is usually temporary — please try again in a moment.</p>
+            <button
+              onClick={() => refetch()}
+              disabled={isFetching}
+              className="mt-3 rounded bg-[#006272] px-4 py-2 text-sm font-semibold text-white hover:bg-[#004f5c] disabled:opacity-60"
+            >
+              {isFetching ? "Retrying…" : "Try again"}
+            </button>
+          </div>
         )}
+
+        {!isLoading && !isError && data && data.length === 0 && (
+          <p className="text-sm text-gray-600">There are no news items to show at the moment.</p>
+        )}
+
 
         {data && data.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-gray-200 rounded-xl overflow-hidden shadow-sm">

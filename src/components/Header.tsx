@@ -111,6 +111,10 @@ export default function Header() {
                 <span className="text-gray-400">|</span>
               </span>
             ))}
+            <Link to="/topics" className="hidden sm:inline text-[#006272] hover:underline">
+              Topics
+            </Link>
+            <span className="hidden sm:inline text-gray-400">|</span>
             <Link to="/news" className="hidden sm:inline text-[#006272] hover:underline">
               News and updates
             </Link>
@@ -126,17 +130,8 @@ export default function Header() {
               </svg>
               WP Check
             </Link>
-
-            {/* Discreet admin entry */}
-            <Link
-              to="/admin"
-              aria-label="Administrator portal"
-              title="Administrator portal"
-              className="ml-1 inline-flex h-5 w-6 items-center justify-center rounded border border-gray-400 text-[10px] font-semibold tracking-wide text-gray-600 opacity-70 hover:opacity-100 transition-opacity"
-            >
-              AD
-            </Link>
           </nav>
+
         </div>
       </div>
 
@@ -325,10 +320,16 @@ export default function Header() {
                 </li>
               ))}
               <li className="border-b border-gray-100">
+                <Link to="/topics" onClick={() => setMobileOpen(false)} className="block px-5 py-3.5 text-sm font-semibold text-gray-800">
+                  Browse all topics
+                </Link>
+              </li>
+              <li className="border-b border-gray-100">
                 <Link to="/news" onClick={() => setMobileOpen(false)} className="block px-5 py-3.5 text-sm font-semibold text-gray-800">
                   News and updates
                 </Link>
               </li>
+
               <li className="p-4">
                 <Link
                   to="/wp-check"
