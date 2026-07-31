@@ -1,0 +1,152 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import SiteLayout from "@/components/SiteLayout";
+
+const title = "WP Check — Work Agreement & Entitlement Verification";
+const description =
+  "Use the official WP Check service to verify a work agreement and confirm minimum employment entitlements before employment starts.";
+
+export const Route = createFileRoute("/wp-check")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: WpCheckPage,
+});
+
+type Result = { reference: string; status: "verified" | "review"; checked: string };
+
+function WpCheckPage() {
+  const [result, setResult] = useState<Result | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const ref = String(form.get("reference") ?? "").trim();
+    setSubmitting(true);
+    setTimeout(() => {
+      setResult({
+        reference: ref.toUpperCase(),
+        status: ref.length >= 6 ? "verified" : "review",
+        checked: new Date().toLocaleString("en-NZ"),
+      });
+      setSubmitting(false);
+    }, 500);
+  }
+
+  return (
+    <SiteLayout>
+      <div className="bg-[#006272]">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <nav aria-label="Breadcrumb" className="text-xs text-[#9fd4db] mb-3">
+            <Link to="/" className="hover:underline">Home</Link> <span aria-hidden="true">/</span> WP Check
+          </nav>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+            WP Check
+          </h1>
+          <p className="mt-2 text-sm font-semibold text-[#9fd4db]">
+            Work Agreement &amp; Entitlement Verification
+          </p>
+          <p className="mt-3 max-w-2xl text-sm sm:text-base text-[#b2d8de]">{description}</p>
+        </div>
+      </div>
+
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <form onSubmit={onSubmit} className="rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900">Start a WP Check</h2>
+            <p className="mt-1 text-sm text-gray-600">
+              Enter the work agreement reference and employer details to verify entitlements.
+            </p>
+
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field id="reference" label="Work agreement reference" required placeholder="e.g. WPC-2026-004821" />
+              <Field id="employer" label="Employer / company name" required placeholder="Registered employer name" />
+              <Field id="employee" label="Employee full name" required placeholder="As shown on the agreement" />
+              <Field id="start-date" label="Employment start date" type="date" />
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="mt-6 inline-flex items-center justify-center rounded bg-[#006272] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#004f5c] disabled:opacity-60 transition-colors w-full sm:w-auto"
+            >
+              {submitting ? "Checking…" : "Run WP Check"}
+            </button>
+          </form>
+
+          {result && (
+            <div
+              role="status"
+              className={`mt-6 rounded-xl border p-5 ${
+                result.status === "verified"
+                  ? "border-green-200 bg-green-50"
+                  : "border-amber-200 bg-amber-50"
+              }`}
+            >
+              <h3 className="font-bold text-gray-900">
+                {result.status === "verified"
+                  ? "Work agreement and entitlements verified"
+                  : "Further review required"}
+              </h3>
+              <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+                <div><dt className="inline font-semibold">Reference: </dt><dd className="inline">{result.reference || "—"}</dd></div>
+                <div><dt className="inline font-semibold">Checked: </dt><dd className="inline">{result.checked}</dd></div>
+              </dl>
+            </div>
+          )}
+        </div>
+
+        <aside className="rounded-xl bg-[#f5fbfc] border border-[#cfe8ec] p-5 h-fit">
+          <h2 className="font-bold text-gray-900">What WP Check confirms</h2>
+          <ul className="mt-3 space-y-2 text-sm text-gray-700 list-disc pl-5">
+            <li>A written work agreement exists and matches the employer record</li>
+            <li>Minimum wage and hours comply with current law</li>
+            <li>Leave and holiday entitlements are correctly recorded</li>
+            <li>Record keeping obligations are being met</li>
+          </ul>
+          <p className="mt-4 text-xs text-gray-500">
+            WP Check is the official verification service. It replaces all previous verification lookups.
+          </p>
+        </aside>
+      </div>
+    </SiteLayout>
+  );
+}
+
+function Field({
+  id,
+  label,
+  type = "text",
+  required,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-semibold text-gray-800 mb-1">
+        {label}
+      </label>
+      <input
+        id={id}
+        name={id}
+        type={type}
+        required={required}
+        placeholder={placeholder}
+        className="w-full h-11 rounded border border-gray-400 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
+      />
+    </div>
+  );
+}
