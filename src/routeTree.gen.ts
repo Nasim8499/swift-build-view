@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as WpCheckRouteImport } from './routes/wp-check'
+import { Route as DocumentsIdRouteImport } from './routes/documents.$id'
+import { Route as TopicsIndexRouteImport } from './routes/topics.index'
 import { Route as TopicsTopicRouteImport } from './routes/topics.$topic'
 import { Route as ApiPublicNewsRouteImport } from './routes/api/public/news'
 
@@ -36,6 +38,16 @@ const WpCheckRoute = WpCheckRouteImport.update({
   path: '/wp-check',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocumentsIdRoute = DocumentsIdRouteImport.update({
+  id: '/documents/$id',
+  path: '/documents/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopicsIndexRoute = TopicsIndexRouteImport.update({
+  id: '/topics/',
+  path: '/topics/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TopicsTopicRoute = TopicsTopicRouteImport.update({
   id: '/topics/$topic',
   path: '/topics/$topic',
@@ -52,7 +64,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/documents/$id': typeof DocumentsIdRoute
   '/topics/$topic': typeof TopicsTopicRoute
+  '/topics/': typeof TopicsIndexRoute
   '/api/public/news': typeof ApiPublicNewsRoute
 }
 export interface FileRoutesByTo {
@@ -60,7 +74,9 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/documents/$id': typeof DocumentsIdRoute
   '/topics/$topic': typeof TopicsTopicRoute
+  '/topics': typeof TopicsIndexRoute
   '/api/public/news': typeof ApiPublicNewsRoute
 }
 export interface FileRoutesById {
@@ -69,7 +85,9 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/documents/$id': typeof DocumentsIdRoute
   '/topics/$topic': typeof TopicsTopicRoute
+  '/topics/': typeof TopicsIndexRoute
   '/api/public/news': typeof ApiPublicNewsRoute
 }
 export interface FileRouteTypes {
@@ -79,7 +97,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/news'
     | '/wp-check'
+    | '/documents/$id'
     | '/topics/$topic'
+    | '/topics/'
     | '/api/public/news'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -87,7 +107,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/news'
     | '/wp-check'
+    | '/documents/$id'
     | '/topics/$topic'
+    | '/topics'
     | '/api/public/news'
   id:
     | '__root__'
@@ -95,7 +117,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/news'
     | '/wp-check'
+    | '/documents/$id'
     | '/topics/$topic'
+    | '/topics/'
     | '/api/public/news'
   fileRoutesById: FileRoutesById
 }
@@ -104,7 +128,9 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   NewsRoute: typeof NewsRoute
   WpCheckRoute: typeof WpCheckRoute
+  DocumentsIdRoute: typeof DocumentsIdRoute
   TopicsTopicRoute: typeof TopicsTopicRoute
+  TopicsIndexRoute: typeof TopicsIndexRoute
   ApiPublicNewsRoute: typeof ApiPublicNewsRoute
 }
 
@@ -138,6 +164,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WpCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/documents/$id': {
+      id: '/documents/$id'
+      path: '/documents/$id'
+      fullPath: '/documents/$id'
+      preLoaderRoute: typeof DocumentsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topics/': {
+      id: '/topics/'
+      path: '/topics'
+      fullPath: '/topics/'
+      preLoaderRoute: typeof TopicsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/topics/$topic': {
       id: '/topics/$topic'
       path: '/topics/$topic'
@@ -160,19 +200,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   NewsRoute: NewsRoute,
   WpCheckRoute: WpCheckRoute,
+  DocumentsIdRoute: DocumentsIdRoute,
   TopicsTopicRoute: TopicsTopicRoute,
+  TopicsIndexRoute: TopicsIndexRoute,
   ApiPublicNewsRoute: ApiPublicNewsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
