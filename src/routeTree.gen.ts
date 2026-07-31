@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as WpCheckRouteImport } from './routes/wp-check'
 import { Route as TopicsTopicRouteImport } from './routes/topics.$topic'
@@ -18,6 +19,11 @@ import { Route as ApiPublicNewsRouteImport } from './routes/api/public/news'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -43,6 +49,7 @@ const ApiPublicNewsRoute = ApiPublicNewsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
   '/topics/$topic': typeof TopicsTopicRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
   '/topics/$topic': typeof TopicsTopicRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
   '/topics/$topic': typeof TopicsTopicRoute
@@ -65,12 +74,25 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/news' | '/wp-check' | '/topics/$topic' | '/api/public/news'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/news'
+    | '/wp-check'
+    | '/topics/$topic'
+    | '/api/public/news'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/news' | '/wp-check' | '/topics/$topic' | '/api/public/news'
+  to:
+    | '/'
+    | '/admin'
+    | '/news'
+    | '/wp-check'
+    | '/topics/$topic'
+    | '/api/public/news'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/news'
     | '/wp-check'
     | '/topics/$topic'
@@ -79,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   NewsRoute: typeof NewsRoute
   WpCheckRoute: typeof WpCheckRoute
   TopicsTopicRoute: typeof TopicsTopicRoute
@@ -92,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -127,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   NewsRoute: NewsRoute,
   WpCheckRoute: WpCheckRoute,
   TopicsTopicRoute: TopicsTopicRoute,
