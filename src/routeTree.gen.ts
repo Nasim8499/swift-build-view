@@ -10,11 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as WpCheckRouteImport } from './routes/wp-check'
+import { Route as TopicsTopicRouteImport } from './routes/topics.$topic'
 import { Route as ApiPublicNewsRouteImport } from './routes/api/public/news'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WpCheckRoute = WpCheckRouteImport.update({
+  id: '/wp-check',
+  path: '/wp-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopicsTopicRoute = TopicsTopicRouteImport.update({
+  id: '/topics/$topic',
+  path: '/topics/$topic',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicNewsRoute = ApiPublicNewsRouteImport.update({
@@ -25,27 +43,45 @@ const ApiPublicNewsRoute = ApiPublicNewsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/news': typeof NewsRoute
+  '/wp-check': typeof WpCheckRoute
+  '/topics/$topic': typeof TopicsTopicRoute
   '/api/public/news': typeof ApiPublicNewsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/news': typeof NewsRoute
+  '/wp-check': typeof WpCheckRoute
+  '/topics/$topic': typeof TopicsTopicRoute
   '/api/public/news': typeof ApiPublicNewsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/news': typeof NewsRoute
+  '/wp-check': typeof WpCheckRoute
+  '/topics/$topic': typeof TopicsTopicRoute
   '/api/public/news': typeof ApiPublicNewsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/news'
+  fullPaths: '/' | '/news' | '/wp-check' | '/topics/$topic' | '/api/public/news'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/news'
-  id: '__root__' | '/' | '/api/public/news'
+  to: '/' | '/news' | '/wp-check' | '/topics/$topic' | '/api/public/news'
+  id:
+    | '__root__'
+    | '/'
+    | '/news'
+    | '/wp-check'
+    | '/topics/$topic'
+    | '/api/public/news'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NewsRoute: typeof NewsRoute
+  WpCheckRoute: typeof WpCheckRoute
+  TopicsTopicRoute: typeof TopicsTopicRoute
   ApiPublicNewsRoute: typeof ApiPublicNewsRoute
 }
 
@@ -56,6 +92,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wp-check': {
+      id: '/wp-check'
+      path: '/wp-check'
+      fullPath: '/wp-check'
+      preLoaderRoute: typeof WpCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topics/$topic': {
+      id: '/topics/$topic'
+      path: '/topics/$topic'
+      fullPath: '/topics/$topic'
+      preLoaderRoute: typeof TopicsTopicRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/news': {
@@ -70,6 +127,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NewsRoute: NewsRoute,
+  WpCheckRoute: WpCheckRoute,
+  TopicsTopicRoute: TopicsTopicRoute,
   ApiPublicNewsRoute: ApiPublicNewsRoute,
 }
 export const routeTree = rootRouteImport
