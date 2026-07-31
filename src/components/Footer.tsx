@@ -228,7 +228,16 @@ export default function Footer() {
               ))}
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
+              <Link
+                to="/admin"
+                aria-label="Administrator portal"
+                title="Administrator portal"
+                className="inline-flex h-5 w-6 items-center justify-center rounded border border-gray-700 text-[10px] font-semibold tracking-wide text-gray-500 opacity-40 hover:opacity-100 transition-opacity"
+              >
+                AD
+              </Link>
               <span className="text-gray-600 text-xs">© Crown copyright {new Date().getFullYear()}</span>
+
               {/* NZ Govt logo */}
               <div className="flex items-center gap-1.5">
                 <div className="w-6 h-6 bg-[#006272] rounded-full flex items-center justify-center">
