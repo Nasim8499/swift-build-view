@@ -188,34 +188,3 @@ function Field({
     </div>
   );
 }
-
-
-function Field({
-  id,
-  label,
-  type = "text",
-  required,
-  placeholder,
-}: {
-  id: string;
-  label: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="block text-sm font-semibold text-gray-800 mb-1">
-        {label}
-      </label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="w-full h-11 rounded border border-gray-400 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
-      />
-    </div>
-  );
-}
