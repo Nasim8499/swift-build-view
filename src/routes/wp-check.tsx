@@ -1,6 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import SiteLayout from "@/components/SiteLayout";
+import { COUNTRIES } from "@/lib/countries";
+import { runWpCheck } from "@/lib/wpcheck-verify.functions";
 
 const title = "WP Check — Work Agreement & Entitlement Verification";
 const description =
@@ -20,25 +24,42 @@ export const Route = createFileRoute("/wp-check")({
   component: WpCheckPage,
 });
 
-type Result = { reference: string; status: "verified" | "review"; checked: string };
+const styles = {
+  verified: "border-green-200 bg-green-50",
+  review: "border-amber-200 bg-amber-50",
+  not_found: "border-red-200 bg-red-50",
+} as const;
+
+const headings = {
+  verified: "Work agreement and entitlements verified",
+  review: "Further review required",
+  not_found: "No matching record found",
+} as const;
 
 function WpCheckPage() {
-  const [result, setResult] = useState<Result | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const check = useServerFn(runWpCheck);
+  const mutation = useMutation({ mutationFn: check });
+  const result = mutation.data;
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
     const form = new FormData(e.currentTarget);
-    const ref = String(form.get("reference") ?? "").trim();
-    setSubmitting(true);
-    setTimeout(() => {
-      setResult({
-        reference: ref.toUpperCase(),
-        status: ref.length >= 6 ? "verified" : "review",
-        checked: new Date().toLocaleString("en-NZ"),
-      });
-      setSubmitting(false);
-    }, 500);
+    const payload = {
+      reference: String(form.get("reference") ?? "").trim(),
+      passport: String(form.get("passport") ?? "").trim(),
+      dob: String(form.get("dob") ?? "").trim(),
+      country: String(form.get("country") ?? "").trim(),
+    };
+    if (!payload.reference || !payload.passport || !payload.dob || !payload.country) {
+      setError("Please complete every field before running a WP Check.");
+      return;
+    }
+    mutation.mutate(
+      { data: payload },
+      { onError: () => setError("We could not complete the check. Please try again in a moment.") },
+    );
   }
 
   return (
@@ -63,42 +84,55 @@ function WpCheckPage() {
           <form onSubmit={onSubmit} className="rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm">
             <h2 className="text-lg font-bold text-gray-900">Start a WP Check</h2>
             <p className="mt-1 text-sm text-gray-600">
-              Enter the work agreement reference and employer details to verify entitlements.
+              Enter the reference number and travel document details exactly as they appear on the work agreement.
             </p>
 
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field id="reference" label="Work agreement reference" required placeholder="e.g. WPC-2026-004821" />
-              <Field id="employer" label="Employer / company name" required placeholder="Registered employer name" />
-              <Field id="employee" label="Employee full name" required placeholder="As shown on the agreement" />
-              <Field id="start-date" label="Employment start date" type="date" />
+              <Field id="reference" label="Reference number" required placeholder="e.g. WPC-2026-004821" />
+              <Field id="passport" label="Passport number" required placeholder="e.g. LA1234567" />
+              <Field id="dob" label="Date of birth" type="date" required max={new Date().toISOString().slice(0, 10)} />
+              <div>
+                <label htmlFor="country" className="block text-sm font-semibold text-gray-800 mb-1">
+                  Country of documents
+                </label>
+                <select
+                  id="country"
+                  name="country"
+                  required
+                  defaultValue=""
+                  className="w-full h-11 rounded border border-gray-400 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
+                >
+                  <option value="" disabled>Select a country</option>
+                  {COUNTRIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+
+            {error && (
+              <p role="alert" className="mt-4 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+                {error}
+              </p>
+            )}
 
             <button
               type="submit"
-              disabled={submitting}
+              disabled={mutation.isPending}
               className="mt-6 inline-flex items-center justify-center rounded bg-[#006272] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#004f5c] disabled:opacity-60 transition-colors w-full sm:w-auto"
             >
-              {submitting ? "Checking…" : "Run WP Check"}
+              {mutation.isPending ? "Checking…" : "Run WP Check"}
             </button>
           </form>
 
           {result && (
-            <div
-              role="status"
-              className={`mt-6 rounded-xl border p-5 ${
-                result.status === "verified"
-                  ? "border-green-200 bg-green-50"
-                  : "border-amber-200 bg-amber-50"
-              }`}
-            >
-              <h3 className="font-bold text-gray-900">
-                {result.status === "verified"
-                  ? "Work agreement and entitlements verified"
-                  : "Further review required"}
-              </h3>
+            <div role="status" className={`mt-6 rounded-xl border p-5 ${styles[result.status]}`}>
+              <h3 className="font-bold text-gray-900">{headings[result.status]}</h3>
+              <p className="mt-2 text-sm text-gray-700">{result.message}</p>
               <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-                <div><dt className="inline font-semibold">Reference: </dt><dd className="inline">{result.reference || "—"}</dd></div>
-                <div><dt className="inline font-semibold">Checked: </dt><dd className="inline">{result.checked}</dd></div>
+                <div><dt className="inline font-semibold">Reference: </dt><dd className="inline">{result.reference}</dd></div>
+                <div><dt className="inline font-semibold">Country of documents: </dt><dd className="inline">{result.country}</dd></div>
+                <div><dt className="inline font-semibold">Checked: </dt><dd className="inline">{new Date(result.checkedAt).toLocaleString("en-NZ")}</dd></div>
               </dl>
             </div>
           )}
@@ -108,6 +142,7 @@ function WpCheckPage() {
           <h2 className="font-bold text-gray-900">What WP Check confirms</h2>
           <ul className="mt-3 space-y-2 text-sm text-gray-700 list-disc pl-5">
             <li>A written work agreement exists and matches the employer record</li>
+            <li>The passport number and date of birth match the agreement on file</li>
             <li>Minimum wage and hours comply with current law</li>
             <li>Leave and holiday entitlements are correctly recorded</li>
             <li>Record keeping obligations are being met</li>
@@ -120,6 +155,40 @@ function WpCheckPage() {
     </SiteLayout>
   );
 }
+
+function Field({
+  id,
+  label,
+  type = "text",
+  required,
+  placeholder,
+  max,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  max?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-semibold text-gray-800 mb-1">
+        {label}
+      </label>
+      <input
+        id={id}
+        name={id}
+        type={type}
+        required={required}
+        placeholder={placeholder}
+        max={max}
+        className="w-full h-11 rounded border border-gray-400 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
+      />
+    </div>
+  );
+}
+
 
 function Field({
   id,
