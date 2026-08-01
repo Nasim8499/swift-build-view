@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import AccountLink from '@/components/AccountLink';
+import NzGovLogo from '@/components/NzGovLogo';
 
 
 export const navItems = [
@@ -153,14 +154,8 @@ export default function Header() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-[72px] gap-4">
           <Link to="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-full bg-[#006272] flex items-center justify-center shrink-0 overflow-hidden">
-              <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" aria-hidden="true">
-                <circle cx="26" cy="26" r="26" fill="#006272" />
-                <path d="M26 44 C26 44 18 33 17 24 C16 15 21 8 26 8 C31 8 37 15 36 24 C35 33 26 44 26 44Z" fill="white" opacity="0.9" />
-                <path d="M26 36 C26 36 20 28 19 22" stroke="#006272" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <path d="M26 30 C26 30 20 24 18 18" stroke="#006272" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-                <path d="M26 24 C26 24 31 19 34 16" stroke="#006272" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-              </svg>
+            <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] shrink-0">
+              <NzGovLogo className="w-full h-full" />
             </div>
             <div className="min-w-0">
               <div className="text-[#006272] font-extrabold text-base sm:text-[1.1rem] leading-tight tracking-tight group-hover:underline">
