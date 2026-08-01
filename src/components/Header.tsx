@@ -97,7 +97,7 @@ export default function Header() {
       {/* Top utility bar */}
       <div className="bg-[#f2f2f2] border-b border-gray-300">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 min-h-9 py-1">
-          <a href="#" className="flex min-w-0 items-center gap-1.5 text-xs text-[#006272] hover:underline font-medium">
+          <a href="https://www.mbie.govt.nz" target="_blank" rel="noreferrer" className="flex min-w-0 items-center gap-1.5 text-xs text-[#006272] hover:underline font-medium">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="shrink-0" aria-hidden="true">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
             </svg>
@@ -105,14 +105,23 @@ export default function Header() {
           </a>
 
           <nav className="flex items-center gap-2 text-xs shrink-0" aria-label="Utility navigation">
-            {['About us', 'Online learning', 'Contact us'].map((label) => (
+            {[
+              { label: 'About us', href: 'https://www.mbie.govt.nz' },
+              { label: 'Online learning', href: 'https://www.business.govt.nz' },
+              { label: 'Contact us', href: 'tel:0800209020' },
+            ].map(({ label, href }) => (
               <span key={label} className="hidden lg:flex items-center gap-2">
-                <a href="#" className="text-[#006272] hover:underline">
+                <a
+                  href={href}
+                  {...(href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  className="text-[#006272] hover:underline"
+                >
                   {label}
                 </a>
                 <span className="text-gray-400">|</span>
               </span>
             ))}
+
             <Link to="/topics" className="hidden sm:inline text-[#006272] hover:underline">
               Topics
             </Link>

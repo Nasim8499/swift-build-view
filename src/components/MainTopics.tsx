@@ -1,3 +1,7 @@
+import { Link } from '@tanstack/react-router';
+
+const slugify = (title: string) => title.toLowerCase().replace(/\s+/g, '-');
+
 const topics = [
   {
     bgColor: '#006272',
@@ -11,7 +15,6 @@ const topics = [
       'Hiring employees',
       'Minimum rights of employees',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#005a50',
@@ -25,7 +28,6 @@ const topics = [
       'Rest and meal breaks',
       'Record keeping',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#2d6b8c',
@@ -39,7 +41,6 @@ const topics = [
       'Parental leave',
       'Bereavement leave',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#4a3a7a',
@@ -53,7 +54,6 @@ const topics = [
       'Harassment and bullying',
       'Drug and alcohol testing',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#7a3a28',
@@ -67,7 +67,6 @@ const topics = [
       'Employment Relations Authority',
       'Labour Inspectorate',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#5a5228',
@@ -81,7 +80,6 @@ const topics = [
       'Retirement',
       'Final pay',
     ],
-    viewAllHref: '#',
   },
 ];
 
@@ -134,27 +132,30 @@ export default function MainTopics() {
                 <ul className="flex-1 space-y-1 mb-4">
                   {topic.links.map((link) => (
                     <li key={link}>
-                      <a
-                        href="#"
+                      <Link
+                        to="/topics/$topic"
+                        params={{ topic: slugify(topic.title) }}
                         className="flex items-center gap-2 text-[13px] font-medium text-[#006272] hover:text-[#004f5c] hover:underline group"
                       >
                         <span className="group-hover:translate-x-0.5 transition-transform">
                           <ArrowSvg />
                         </span>
                         {link}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
 
-                <a
-                  href={topic.viewAllHref}
+                <Link
+                  to="/topics/$topic"
+                  params={{ topic: slugify(topic.title) }}
                   className="inline-flex items-center gap-2 text-[13px] font-bold text-white px-4 py-2 rounded self-start mt-auto transition-opacity hover:opacity-90"
                   style={{ backgroundColor: topic.bgColor }}
                 >
                   View all
                   <ArrowSvg white />
-                </a>
+                </Link>
+
               </div>
             </div>
           ))}

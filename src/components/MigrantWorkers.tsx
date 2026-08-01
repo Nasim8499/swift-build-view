@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router';
+
 function ArrowIcon({ className = 'w-4 h-4' }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
@@ -37,20 +39,22 @@ export default function MigrantWorkers() {
 
           {/* Right side links */}
           <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-            <a
-              href="#"
+            <Link
+              to="/wp-check"
               className="inline-flex items-center gap-2 bg-[#006272] text-white font-semibold px-5 py-2.5 rounded hover:bg-[#004f5c] transition-colors text-sm"
             >
               Migrant worker rights
               <ArrowIcon />
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/topics/$topic"
+              params={{ topic: 'resolving-problems' }}
               className="inline-flex items-center gap-2 border-2 border-[#006272] text-[#006272] font-semibold px-5 py-2.5 rounded hover:bg-[#e6f4f6] transition-colors text-sm"
             >
               Report exploitation
               <ArrowIcon />
-            </a>
+            </Link>
+
           </div>
         </div>
       </div>

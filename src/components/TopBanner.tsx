@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from '@tanstack/react-router';
 
 export default function TopBanner() {
   const [visible, setVisible] = useState(true);
@@ -26,8 +27,9 @@ export default function TopBanner() {
             <p className="text-sm leading-relaxed text-white">
               <strong className="font-bold">Employment Leave Bill</strong>
               {' '}— A new Employment Leave Bill has been introduced to replace the Holidays Act. Until the new Bill takes effect, employers must continue to follow the current law.{' '}
-              <a
-                href="#"
+              <Link
+                to="/news"
+                search={{ q: '', category: 'Law change' }}
                 className="inline-flex items-center gap-1 text-[#9fd4db] hover:text-white underline font-medium"
               >
                 Employment Leave Bill 2026
@@ -37,7 +39,8 @@ export default function TopBanner() {
                     <path d="M3 12L27 12" strokeDasharray="24" />
                   </g>
                 </svg>
-              </a>
+              </Link>
+
             </p>
           </div>
 
