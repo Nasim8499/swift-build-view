@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as WpCheckRouteImport } from './routes/wp-check'
+import { Route as WpCheckResultRouteImport } from './routes/wp-check-result'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as TopicsIndexRouteImport } from './routes/topics.index'
 import { Route as TopicsTopicRouteImport } from './routes/topics.$topic'
@@ -42,6 +43,11 @@ const NewsRoute = NewsRouteImport.update({
 const WpCheckRoute = WpCheckRouteImport.update({
   id: '/wp-check',
   path: '/wp-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WpCheckResultRoute = WpCheckResultRouteImport.update({
+  id: '/wp-check-result',
+  path: '/wp-check-result',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/wp-check-result': typeof WpCheckResultRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/topics/': typeof TopicsIndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/wp-check-result': typeof WpCheckResultRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/topics': typeof TopicsIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/wp-check-result': typeof WpCheckResultRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/topics/': typeof TopicsIndexRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/news'
     | '/wp-check'
+    | '/wp-check-result'
     | '/admin'
     | '/topics/$topic'
     | '/topics/'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/news'
     | '/wp-check'
+    | '/wp-check-result'
     | '/admin'
     | '/topics/$topic'
     | '/topics'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/news'
     | '/wp-check'
+    | '/wp-check-result'
     | '/_authenticated/admin'
     | '/topics/$topic'
     | '/topics/'
@@ -149,6 +161,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   NewsRoute: typeof NewsRoute
   WpCheckRoute: typeof WpCheckRoute
+  WpCheckResultRoute: typeof WpCheckResultRoute
   TopicsTopicRoute: typeof TopicsTopicRoute
   TopicsIndexRoute: typeof TopicsIndexRoute
   ApiPublicNewsRoute: typeof ApiPublicNewsRoute
@@ -189,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/wp-check'
       fullPath: '/wp-check'
       preLoaderRoute: typeof WpCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wp-check-result': {
+      id: '/wp-check-result'
+      path: '/wp-check-result'
+      fullPath: '/wp-check-result'
+      preLoaderRoute: typeof WpCheckResultRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -248,6 +268,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   NewsRoute: NewsRoute,
   WpCheckRoute: WpCheckRoute,
+  WpCheckResultRoute: WpCheckResultRoute,
   TopicsTopicRoute: TopicsTopicRoute,
   TopicsIndexRoute: TopicsIndexRoute,
   ApiPublicNewsRoute: ApiPublicNewsRoute,
