@@ -85,7 +85,7 @@ function AdminPage() {
 }
 
 function AdminDashboard({ email, onSignOut }: { email: string; onSignOut: () => void }) {
-  const [tab, setTab] = useState<"documents" | "generate">("documents");
+  const [tab, setTab] = useState<"documents" | "generate" | "audit">("documents");
   const [docs, setDocs] = useState<CloudUpload[]>([]);
   const [agreements, setAgreements] = useState<CloudAgreement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -202,7 +202,7 @@ function AdminDashboard({ email, onSignOut }: { email: string; onSignOut: () => 
 
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-[1200px] gap-1 overflow-x-auto px-4 sm:px-6">
-          {([["documents", "Uploaded PDFs"], ["generate", "Generate agreement"]] as const).map(([key, label]) => (
+          {([["documents", "Uploaded PDFs"], ["generate", "Generate agreement"], ["audit", "Check audit log"]] as const).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setTab(key)}
