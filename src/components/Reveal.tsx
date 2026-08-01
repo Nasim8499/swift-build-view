@@ -36,9 +36,7 @@ export default function Reveal({
         window.removeEventListener("resize", onScroll);
       }
     }
-    const timer = window.setTimeout(() => setShown(true), 2500);
     return () => {
-      window.clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
