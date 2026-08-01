@@ -1,3 +1,7 @@
+import { Link } from '@tanstack/react-router';
+
+const slugify = (title: string) => title.toLowerCase().replace(/\s+/g, '-');
+
 const topics = [
   {
     bgColor: '#006272',
@@ -134,27 +138,30 @@ export default function MainTopics() {
                 <ul className="flex-1 space-y-1 mb-4">
                   {topic.links.map((link) => (
                     <li key={link}>
-                      <a
-                        href="#"
+                      <Link
+                        to="/topics/$topic"
+                        params={{ topic: slugify(topic.title) }}
                         className="flex items-center gap-2 text-[13px] font-medium text-[#006272] hover:text-[#004f5c] hover:underline group"
                       >
                         <span className="group-hover:translate-x-0.5 transition-transform">
                           <ArrowSvg />
                         </span>
                         {link}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
 
-                <a
-                  href={topic.viewAllHref}
+                <Link
+                  to="/topics/$topic"
+                  params={{ topic: slugify(topic.title) }}
                   className="inline-flex items-center gap-2 text-[13px] font-bold text-white px-4 py-2 rounded self-start mt-auto transition-opacity hover:opacity-90"
                   style={{ backgroundColor: topic.bgColor }}
                 >
                   View all
                   <ArrowSvg white />
-                </a>
+                </Link>
+
               </div>
             </div>
           ))}
