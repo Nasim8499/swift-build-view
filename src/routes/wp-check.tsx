@@ -5,6 +5,15 @@ import { useServerFn } from "@tanstack/react-start";
 import SiteLayout from "@/components/SiteLayout";
 import { COUNTRIES } from "@/lib/countries";
 import { runWpCheck } from "@/lib/wpcheck-verify.functions";
+import { LAST_RESULT_KEY } from "@/lib/wpcheck-result";
+import {
+  maskReference,
+  maskPassport,
+  maskDob,
+  validateWpCheck,
+  type WpCheckFieldErrors,
+} from "@/lib/wpcheck-form";
+
 
 const title = "WP Check — Work Agreement & Entitlement Verification";
 const description =
@@ -38,27 +47,45 @@ const headings = {
 
 function WpCheckPage() {
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<WpCheckFieldErrors>({});
+  const [values, setValues] = useState({ reference: "", passport: "", dob: "", country: "" });
   const check = useServerFn(runWpCheck);
   const mutation = useMutation({ mutationFn: check });
   const result = mutation.data;
 
+  function setValue(key: keyof typeof values, value: string) {
+    setValues((v) => ({ ...v, [key]: value }));
+    setFieldErrors((e) => ({ ...e, [key]: undefined }));
+  }
+
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
-    const form = new FormData(e.currentTarget);
-    const payload = {
-      reference: String(form.get("reference") ?? "").trim(),
-      passport: String(form.get("passport") ?? "").trim(),
-      dob: String(form.get("dob") ?? "").trim(),
-      country: String(form.get("country") ?? "").trim(),
-    };
-    if (!payload.reference || !payload.passport || !payload.dob || !payload.country) {
-      setError("Please complete every field before running a WP Check.");
+    const { errors, dobIso } = validateWpCheck(values);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0 || !dobIso) {
+      setError("Please correct the highlighted fields before running a WP Check.");
       return;
     }
     mutation.mutate(
-      { data: payload },
-      { onError: () => setError("We could not complete the check. Please try again in a moment.") },
+      {
+        data: {
+          reference: values.reference.trim(),
+          passport: values.passport.trim(),
+          dob: dobIso,
+          country: values.country.trim(),
+        },
+      },
+      {
+        onSuccess: (data) => {
+          try {
+            sessionStorage.setItem(LAST_RESULT_KEY, JSON.stringify(data));
+          } catch {
+            // Session storage is optional; the result is shown inline regardless.
+          }
+        },
+        onError: () => setError("We could not complete the check. Please try again in a moment."),
+      },
     );
   }
 
@@ -81,16 +108,43 @@ function WpCheckPage() {
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <form onSubmit={onSubmit} className="rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm">
+          <form onSubmit={onSubmit} noValidate className="rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm">
             <h2 className="text-lg font-bold text-gray-900">Start a WP Check</h2>
             <p className="mt-1 text-sm text-gray-600">
               Enter the reference number and travel document details exactly as they appear on the work agreement.
             </p>
 
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field id="reference" label="Reference number" required placeholder="e.g. WPC-2026-004821" />
-              <Field id="passport" label="Passport number" required placeholder="e.g. LA1234567" />
-              <Field id="dob" label="Date of birth" type="date" required max={new Date().toISOString().slice(0, 10)} />
+              <Field
+                id="reference"
+                label="Reference number"
+                placeholder="WPC-2026-004821"
+                hint="Format: three letters, year, then the record number."
+                value={values.reference}
+                error={fieldErrors.reference}
+                inputMode="text"
+                onChange={(v) => setValue("reference", maskReference(v))}
+              />
+              <Field
+                id="passport"
+                label="Passport number"
+                placeholder="LA1234567"
+                hint="6 to 12 letters and numbers, no spaces."
+                value={values.passport}
+                error={fieldErrors.passport}
+                inputMode="text"
+                onChange={(v) => setValue("passport", maskPassport(v))}
+              />
+              <Field
+                id="dob"
+                label="Date of birth"
+                placeholder="DD/MM/YYYY"
+                hint="Type the numbers only — slashes are added for you."
+                value={values.dob}
+                error={fieldErrors.dob}
+                inputMode="numeric"
+                onChange={(v) => setValue("dob", maskDob(v))}
+              />
               <div>
                 <label htmlFor="country" className="block text-sm font-semibold text-gray-800 mb-1">
                   Country of documents
@@ -98,15 +152,21 @@ function WpCheckPage() {
                 <select
                   id="country"
                   name="country"
-                  required
-                  defaultValue=""
-                  className="w-full h-11 rounded border border-gray-400 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
+                  value={values.country}
+                  onChange={(e) => setValue("country", e.target.value)}
+                  aria-invalid={Boolean(fieldErrors.country)}
+                  className={`w-full h-11 rounded border bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272] ${
+                    fieldErrors.country ? "border-red-500" : "border-gray-400"
+                  }`}
                 >
                   <option value="" disabled>Select a country</option>
                   {COUNTRIES.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
+                {fieldErrors.country && (
+                  <p className="mt-1 text-xs font-semibold text-red-700">{fieldErrors.country}</p>
+                )}
               </div>
             </div>
 
@@ -134,9 +194,16 @@ function WpCheckPage() {
                 <div><dt className="inline font-semibold">Country of documents: </dt><dd className="inline">{result.country}</dd></div>
                 <div><dt className="inline font-semibold">Checked: </dt><dd className="inline">{new Date(result.checkedAt).toLocaleString("en-NZ")}</dd></div>
               </dl>
+              <Link
+                to="/wp-check-result"
+                className="mt-4 inline-flex items-center gap-1 rounded bg-[#006272] px-4 py-2 text-sm font-semibold text-white hover:bg-[#004f5c]"
+              >
+                See what this result means and next steps <span aria-hidden="true">→</span>
+              </Link>
             </div>
           )}
         </div>
+
 
         <aside className="rounded-xl bg-[#f5fbfc] border border-[#cfe8ec] p-5 h-fit">
           <h2 className="font-bold text-gray-900">What WP Check confirms</h2>
@@ -159,17 +226,21 @@ function WpCheckPage() {
 function Field({
   id,
   label,
-  type = "text",
-  required,
   placeholder,
-  max,
+  hint,
+  value,
+  error,
+  inputMode,
+  onChange,
 }: {
   id: string;
   label: string;
-  type?: string;
-  required?: boolean;
   placeholder?: string;
-  max?: string;
+  hint?: string;
+  value: string;
+  error?: string | undefined;
+  inputMode?: "text" | "numeric";
+  onChange: (value: string) => void;
 }) {
   return (
     <div>
@@ -179,12 +250,24 @@ function Field({
       <input
         id={id}
         name={id}
-        type={type}
-        required={required}
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        max={max}
-        className="w-full h-11 rounded border border-gray-400 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
+        inputMode={inputMode}
+        autoComplete="off"
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
+        className={`w-full h-11 rounded border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272] ${
+          error ? "border-red-500" : "border-gray-400"
+        }`}
       />
+      {error ? (
+        <p id={`${id}-error`} className="mt-1 text-xs font-semibold text-red-700">{error}</p>
+      ) : hint ? (
+        <p id={`${id}-hint`} className="mt-1 text-xs text-gray-500">{hint}</p>
+      ) : null}
     </div>
   );
+
 }

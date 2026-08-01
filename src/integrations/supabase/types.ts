@@ -35,6 +35,30 @@ export type Database = {
         }
         Relationships: []
       }
+      wp_check_audit: {
+        Row: {
+          checked_at: string
+          country: string
+          id: string
+          reference: string
+          status: string
+        }
+        Insert: {
+          checked_at?: string
+          country: string
+          id?: string
+          reference: string
+          status: string
+        }
+        Update: {
+          checked_at?: string
+          country?: string
+          id?: string
+          reference?: string
+          status?: string
+        }
+        Relationships: []
+      }
       wp_documents: {
         Row: {
           agreement: Json | null

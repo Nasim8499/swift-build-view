@@ -1,5 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { listWpCheckAudit } from "@/lib/wpcheck-audit.functions";
+
 import SiteLayout from "@/components/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { defaultAgreement, docRef, formatNzDate, type AgreementData } from "@/lib/wpcheck-docs";
@@ -85,7 +89,7 @@ function AdminPage() {
 }
 
 function AdminDashboard({ email, onSignOut }: { email: string; onSignOut: () => void }) {
-  const [tab, setTab] = useState<"documents" | "generate">("documents");
+  const [tab, setTab] = useState<"documents" | "generate" | "audit">("documents");
   const [docs, setDocs] = useState<CloudUpload[]>([]);
   const [agreements, setAgreements] = useState<CloudAgreement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -202,7 +206,7 @@ function AdminDashboard({ email, onSignOut }: { email: string; onSignOut: () => 
 
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-[1200px] gap-1 overflow-x-auto px-4 sm:px-6">
-          {([["documents", "Uploaded PDFs"], ["generate", "Generate agreement"]] as const).map(([key, label]) => (
+          {([["documents", "Uploaded PDFs"], ["generate", "Generate agreement"], ["audit", "Check audit log"]] as const).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setTab(key)}
@@ -304,9 +308,12 @@ function AdminDashboard({ email, onSignOut }: { email: string; onSignOut: () => 
             )}
           </div>
         </div>
-      ) : (
+      ) : tab === "generate" ? (
         <GenerateTab agreements={agreements} onChanged={refresh} />
+      ) : (
+        <AuditTab />
       )}
+
     </SiteLayout>
   );
 }
@@ -410,6 +417,87 @@ function GenerateTab({ agreements, onChanged }: { agreements: CloudAgreement[]; 
           </ul>
         )}
       </div>
+    </div>
+  );
+}
+
+const AUDIT_LABELS: Record<string, { label: string; tone: string }> = {
+  verified: { label: "Verified", tone: "bg-green-100 text-green-800" },
+  review: { label: "Further review", tone: "bg-amber-100 text-amber-800" },
+  not_found: { label: "Not found", tone: "bg-red-100 text-red-800" },
+};
+
+function AuditTab() {
+  const load = useServerFn(listWpCheckAudit);
+  const { data, isPending, isError, refetch, isFetching } = useQuery({
+    queryKey: ["wp-check-audit"],
+    queryFn: () => load(),
+  });
+
+  return (
+    <div className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">WP Check audit log</h2>
+          <p className="mt-1 text-sm text-gray-600">
+            Every verification request, with the reference checked and the result. No personal details are stored.
+          </p>
+        </div>
+        <button
+          onClick={() => void refetch()}
+          className="rounded border border-gray-400 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+        >
+          {isFetching ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
+
+      {isPending ? (
+        <div className="mt-6 space-y-2">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-11 animate-pulse rounded bg-gray-100" />
+          ))}
+        </div>
+      ) : isError ? (
+        <p className="mt-6 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+          We couldn&apos;t load the audit log. Please try refreshing.
+        </p>
+      ) : (data ?? []).length === 0 ? (
+        <p className="mt-6 rounded border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-600">
+          No WP Check requests have been recorded yet.
+        </p>
+      ) : (
+        <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200">
+          <table className="w-full min-w-[560px] text-left text-sm">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-600">
+              <tr>
+                <th scope="col" className="px-4 py-3">Checked</th>
+                <th scope="col" className="px-4 py-3">Reference</th>
+                <th scope="col" className="px-4 py-3">Country of documents</th>
+                <th scope="col" className="px-4 py-3">Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(data ?? []).map((row) => {
+                const meta = AUDIT_LABELS[row.status] ?? { label: row.status, tone: "bg-gray-100 text-gray-800" };
+                return (
+                  <tr key={row.id} className="border-t border-gray-200">
+                    <td className="whitespace-nowrap px-4 py-3 text-gray-700">
+                      {new Date(row.checked_at).toLocaleString("en-NZ")}
+                    </td>
+                    <td className="px-4 py-3 font-semibold text-gray-900">{row.reference}</td>
+                    <td className="px-4 py-3 text-gray-700">{row.country}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block rounded px-2 py-0.5 text-xs font-semibold ${meta.tone}`}>
+                        {meta.label}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

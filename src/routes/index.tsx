@@ -15,6 +15,11 @@ import EmployerObligations from "@/components/EmployerObligations";
 import FaqSection from "@/components/FaqSection";
 import ToolsSection from "@/components/ToolsSection";
 import SupportContact from "@/components/SupportContact";
+import EmploymentDataSection from "@/components/EmploymentDataSection";
+import SectorSpotlight from "@/components/SectorSpotlight";
+import WorkJourney from "@/components/WorkJourney";
+import Reveal from "@/components/Reveal";
+
 
 const title = "Employment Services Portal | Jobs, Rights & Support";
 const description =
@@ -40,18 +45,22 @@ function Index() {
       <HeroBanner />
       <QuickLinks />
       <StatsBar />
-      <AudiencePaths />
-      <MainTopics />
-      <MinimumRights />
-      <WpCheckSteps />
-      <MigrantWorkers />
-      <PayRates />
-      <NewsSection />
-      <WorkPermitSection />
-      <EmployerObligations />
-      <FaqSection />
-      <ToolsSection />
-      <SupportContact />
+      <Reveal><AudiencePaths /></Reveal>
+      <EmploymentDataSection />
+      <Reveal><MainTopics /></Reveal>
+      <Reveal><MinimumRights /></Reveal>
+      <WorkJourney />
+      <Reveal><WpCheckSteps /></Reveal>
+      <SectorSpotlight />
+      <Reveal><MigrantWorkers /></Reveal>
+      <Reveal><PayRates /></Reveal>
+      <Reveal><NewsSection /></Reveal>
+      <Reveal><WorkPermitSection /></Reveal>
+      <Reveal><EmployerObligations /></Reveal>
+      <Reveal><FaqSection /></Reveal>
+      <Reveal><ToolsSection /></Reveal>
+      <Reveal><SupportContact /></Reveal>
     </SiteLayout>
   );
 }
+
