@@ -16,18 +16,34 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (typeof IntersectionObserver === "undefined") { setShown(true); return; }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) { setShown(true); io.disconnect(); }
-        }
-      },
-      { rootMargin: "120px 0px 120px 0px", threshold: 0 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
+
+    const check = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 120 && rect.bottom > -120) {
+        setShown(true);
+        return true;
+      }
+      return false;
+    };
+
+    if (check()) return;
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    function onScroll() {
+      if (check()) {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      }
+    }
+    const timer = window.setTimeout(() => setShown(true), 2500);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+
 
   return (
     <div
