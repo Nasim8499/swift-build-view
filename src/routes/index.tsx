@@ -45,18 +45,22 @@ function Index() {
       <HeroBanner />
       <QuickLinks />
       <StatsBar />
-      <AudiencePaths />
-      <MainTopics />
-      <MinimumRights />
-      <WpCheckSteps />
-      <MigrantWorkers />
-      <PayRates />
-      <NewsSection />
-      <WorkPermitSection />
-      <EmployerObligations />
-      <FaqSection />
-      <ToolsSection />
-      <SupportContact />
+      <Reveal><AudiencePaths /></Reveal>
+      <EmploymentDataSection />
+      <Reveal><MainTopics /></Reveal>
+      <Reveal><MinimumRights /></Reveal>
+      <WorkJourney />
+      <Reveal><WpCheckSteps /></Reveal>
+      <SectorSpotlight />
+      <Reveal><MigrantWorkers /></Reveal>
+      <Reveal><PayRates /></Reveal>
+      <Reveal><NewsSection /></Reveal>
+      <Reveal><WorkPermitSection /></Reveal>
+      <Reveal><EmployerObligations /></Reveal>
+      <Reveal><FaqSection /></Reveal>
+      <Reveal><ToolsSection /></Reveal>
+      <Reveal><SupportContact /></Reveal>
     </SiteLayout>
   );
 }
+
