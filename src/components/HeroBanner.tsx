@@ -35,24 +35,27 @@ export default function HeroBanner() {
               I am looking for information as an:
             </p>
             <div className="grid grid-cols-2 gap-3">
-              <a
-                href="#"
+              <Link
+                to="/topics/$topic"
+                params={{ topic: 'pay-and-hours' }}
                 className="flex flex-col items-center justify-center gap-2 bg-[#00707f] text-white font-semibold py-4 px-4 rounded-lg hover:bg-[#005f6c] transition-colors text-center"
               >
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
                 Employee
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/topics/$topic"
+                params={{ topic: 'starting-employment' }}
                 className="flex flex-col items-center justify-center gap-2 border-2 border-[#00707f] text-[#00707f] font-semibold py-4 px-4 rounded-lg hover:bg-[#e6f4f6] transition-colors text-center"
               >
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.46 0 13 0c-1.36 0-2.66.56-3.59 1.56L12 4.59l2.59-2.59C15.08 1.38 15.79 1 16.5 1C17.88 1 19 2.12 19 3.5c0 1.38-1.12 2.5-2.5 2.5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-5 10H7v-2h8v2zm2-4H7v-2h10v2z"/>
                 </svg>
                 Employer
-              </a>
+              </Link>
+
             </div>
           </div>
         </div>
