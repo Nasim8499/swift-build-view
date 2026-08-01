@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from '@tanstack/react-router';
 
 export default function TopBanner() {
   const [visible, setVisible] = useState(true);
