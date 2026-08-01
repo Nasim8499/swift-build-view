@@ -2,7 +2,7 @@
   {
     "id": "thames-four-square-premiums",
     "date": "2026-07-27",
-    "category": "News",
+    "category": "Enforcement",
     "title": "Thames Four Square and owner penalised over $120,000 migrant worker premiums",
     "description": "A Thames Four Square and its owner have been ordered by the Employment Relations Authority (ERA) to pay $44,000 in penalties after making 2 migrant workers pay a total of $120,000 in premiums for their jobs.",
     "tag": null
@@ -10,7 +10,7 @@
   {
     "id": "horticulture-director-fined",
     "date": "2026-07-02",
-    "category": "News",
+    "category": "Enforcement",
     "title": "Horticulture company and director fined $135,000 for migrant worker breaches",
     "description": "A horticulture company and its director have been ordered to pay $135,000 in penalties after the ERA found they breached minimum employment standards affecting 4 migrant workers.",
     "tag": "Migrant exploitation"
@@ -18,33 +18,97 @@
   {
     "id": "auckland-restaurant-exploitation",
     "date": "2026-06-24",
-    "category": "News",
-    "title": "Auckland restaurant and owner must pay $377,000 for exploiting migrant workers",
-    "description": "An Auckland restaurant has been ordered by the ERA to pay almost $200,000 in wage arrears to seven employees, while the company's sole director was penalised $177,300 for exploiting the workers.",
-    "tag": "Migrant exploitation"
-  },
-  {
-    "id": "era-changes-in-force",
-    "date": "2026-02-21",
-    "category": "News",
-    "title": "Employment Relations Act changes take effect today",
-    "description": "A series of changes to the Employment Relations Act come into force today, following the passing of the Employment Relations Amendment Act 2025.",
+    "category": "Enforcement",
+    "title": "Auckland restaurant owner banned from employing migrant workers",
+    "description": "Labour Inspectorate action has resulted in an Auckland restaurant owner being placed on the stand-down list, preventing them from supporting work visa applications for 12 months.",
     "tag": null
   },
   {
-    "id": "wp-check-launch",
-    "date": "2026-01-15",
+    "id": "employment-leave-bill-introduced",
+    "date": "2026-06-11",
+    "category": "Law change",
+    "title": "Employment Leave Bill introduced to replace the Holidays Act",
+    "description": "The Employment Leave Bill has been introduced to Parliament. Until it takes effect, employers must continue to apply the current Holidays Act rules to annual holidays, sick leave and public holidays.",
+    "tag": "Consultation open"
+  },
+  {
+    "id": "minimum-wage-review-2026",
+    "date": "2026-05-30",
+    "category": "Law change",
+    "title": "Minimum wage rates increase from 1 April",
+    "description": "The adult minimum wage, starting-out and training rates have been reviewed. Employers must update payroll before the first pay period that starts on or after the effective date.",
+    "tag": null
+  },
+  {
+    "id": "wp-check-service-launch",
+    "date": "2026-05-14",
+    "category": "WP Check",
+    "title": "Official WP Check replaces older visa verification services",
+    "description": "Employers can now confirm a worker's Work Agreement and Entitlement Verification through the official WP Check service, which returns a reference number for the employer's records.",
+    "tag": "New service"
+  },
+  {
+    "id": "aewv-median-wage-update",
+    "date": "2026-04-28",
+    "category": "Guidance",
+    "title": "Updated guidance for Accredited Employer Work Visa roles",
+    "description": "Guidance for accredited employers has been refreshed, covering job checks, advertising requirements and pay rate obligations for AEWV roles.",
+    "tag": null
+  },
+  {
+    "id": "record-keeping-guidance",
+    "date": "2026-04-09",
+    "category": "Guidance",
+    "title": "New record keeping templates for wages, time and holidays",
+    "description": "Downloadable templates help employers meet their legal obligation to keep accurate wage, time, holiday and leave records for at least seven years.",
+    "tag": null
+  },
+  {
+    "id": "construction-sector-audit",
+    "date": "2026-03-26",
     "category": "Media release",
-    "title": "WP Check launches for employers verifying work agreements and entitlements",
-    "description": "Employers can now use WP Check (Work Agreement & Entitlement Verification) to confirm an employee's work agreement details and minimum entitlements before employment begins.",
-    "tag": "WP Check"
+    "title": "Labour Inspectorate audits construction sites nationwide",
+    "description": "A nationwide programme of proactive audits is under way across residential construction, focused on employment agreements, pay records and hours worked.",
+    "tag": "Proactive audit"
   },
   {
-    "id": "minimum-wage-review",
-    "date": "2025-12-08",
-    "category": "Update",
-    "title": "Annual minimum wage review consultation opens",
-    "description": "Consultation is now open on the annual minimum wage review. Employers, employees and representative groups are invited to make submissions.",
+    "id": "triangular-employment-guidance",
+    "date": "2026-03-05",
+    "category": "Guidance",
+    "title": "Guidance published on triangular employment arrangements",
+    "description": "New material explains the responsibilities of labour hire companies and controlling third parties when a worker is placed with another business.",
     "tag": null
+  },
+  {
+    "id": "mediation-service-wait-times",
+    "date": "2026-02-19",
+    "category": "News",
+    "title": "Mediation service expands early resolution phone support",
+    "description": "Additional mediators have been added to the early resolution service, reducing wait times for employers and employees seeking informal help with workplace issues.",
+    "tag": null
+  },
+  {
+    "id": "holiday-pay-calculation-reminder",
+    "date": "2026-02-02",
+    "category": "News",
+    "title": "Reminder: check holiday pay calculations after a change in hours",
+    "description": "Employers are reminded to review annual holiday pay calculations whenever an employee's hours or pay pattern changes, to avoid underpayment.",
+    "tag": null
+  },
+  {
+    "id": "seasonal-workers-campaign",
+    "date": "2026-01-20",
+    "category": "Media release",
+    "title": "Seasonal worker information campaign begins",
+    "description": "An information campaign is running across horticulture regions to make sure seasonal workers know their minimum rights on pay, breaks and deductions.",
+    "tag": null
+  },
+  {
+    "id": "stand-down-list-update",
+    "date": "2026-01-08",
+    "category": "Enforcement",
+    "title": "Stand-down list updated with 18 non-compliant employers",
+    "description": "Employers found to have breached minimum employment standards have been added to the stand-down list and cannot recruit migrant workers for a set period.",
+    "tag": "Updated monthly"
   }
 ]
