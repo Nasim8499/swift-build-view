@@ -131,7 +131,6 @@ function ResultPage() {
                   </dl>
                   <Link
                     to="/wp-check"
-                    search={{ resubmit: 1 }}
                     className="mt-3 inline-flex items-center rounded bg-[#006272] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#004f5c]"
                   >
                     Resubmit with these details
