@@ -12,8 +12,8 @@ type NewsSearch = { q: string; category: string };
 
 export const Route = createFileRoute("/news")({
   validateSearch: (search: Record<string, unknown>): NewsSearch => ({
-    q: typeof search.q === "string" ? search.q : "",
-    category: typeof search.category === "string" ? search.category : "All",
+    q: typeof search['q'] === "string" ? search['q'] : "",
+    category: typeof search['category'] === "string" ? search['category'] : "All",
   }),
   head: () => ({
     meta: [
@@ -52,7 +52,7 @@ function NewsPage() {
   }, [data, category, query]);
 
   const setSearch = (patch: Partial<NewsSearch>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
+    navigate({ search: (prev: NewsSearch) => ({ ...prev, ...patch }), replace: true });
 
   return (
     <SiteLayout>
