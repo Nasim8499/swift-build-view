@@ -59,13 +59,15 @@ export default function ToolsSection() {
                 </svg>
                 0800 20 90 20
               </a>
-              <a
-                href="#"
+              <Link
+                to="/topics/$topic"
+                params={{ topic: 'resolving-problems' }}
                 className="inline-flex items-center justify-center gap-2 border-2 border-[#006272] text-[#006272] font-semibold px-6 py-2.5 rounded-lg hover:bg-white transition-colors text-sm"
               >
                 Learn about early resolution
                 <ArrowIcon />
-              </a>
+              </Link>
+
             </div>
           </div>
         </div>
