@@ -9,7 +9,7 @@ type Panel = {
   stat: string;
   statLabel: string;
   points: string[];
-  to: string;
+  topic: string | null;
 };
 
 const PANELS: Panel[] = [
@@ -26,7 +26,7 @@ const PANELS: Panel[] = [
       "Changes must be agreed in writing by both parties",
       "Agreements must never contain terms below the legal minimum",
     ],
-    to: "/topics/employment-agreements",
+    topic: "employment-agreements",
   },
   {
     id: "pay",
@@ -41,7 +41,7 @@ const PANELS: Panel[] = [
       "Unpaid trials and unpaid training hours are unlawful",
       "Overtime and allowances must match the agreement",
     ],
-    to: "/topics/pay-and-wages",
+    topic: "pay-and-wages",
   },
   {
     id: "hours",
@@ -56,7 +56,7 @@ const PANELS: Panel[] = [
       "11 public holidays with time-and-a-half plus an alternative day",
       "Availability clauses need reasonable compensation",
     ],
-    to: "/topics/hours-and-leave",
+    topic: "hours-and-leave",
   },
   {
     id: "migrant",
@@ -71,7 +71,7 @@ const PANELS: Panel[] = [
       "Work must match the region, role and hours on the agreement",
       "Reporting exploitation does not affect your visa application",
     ],
-    to: "/wp-check",
+    topic: null,
   },
   {
     id: "safety",
@@ -86,7 +86,7 @@ const PANELS: Panel[] = [
       "Workers may refuse work that risks serious harm",
       "Bullying and harassment are workplace health and safety issues",
     ],
-    to: "/topics/health-and-safety",
+    topic: "health-and-safety",
   },
   {
     id: "resolution",
@@ -101,7 +101,7 @@ const PANELS: Panel[] = [
       "Employment Relations Authority hears unresolved matters",
       "Labour inspectors enforce minimum entitlements",
     ],
-    to: "/topics/resolving-problems",
+    topic: "resolving-problems",
   },
 ];
 
@@ -168,12 +168,22 @@ export default function EmploymentDataSection() {
                           <li key={p}>{p}</li>
                         ))}
                       </ul>
-                      <Link
-                        to={panel.to}
-                        className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#006272] hover:underline"
-                      >
-                        Read the full guidance <span aria-hidden="true">→</span>
-                      </Link>
+                      {panel.topic ? (
+                        <Link
+                          to="/topics/$topic"
+                          params={{ topic: panel.topic }}
+                          className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#006272] hover:underline"
+                        >
+                          Read the full guidance <span aria-hidden="true">→</span>
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/wp-check"
+                          className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#006272] hover:underline"
+                        >
+                          Run a WP Check <span aria-hidden="true">→</span>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
