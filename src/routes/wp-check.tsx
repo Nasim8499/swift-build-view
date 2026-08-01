@@ -5,6 +5,15 @@ import { useServerFn } from "@tanstack/react-start";
 import SiteLayout from "@/components/SiteLayout";
 import { COUNTRIES } from "@/lib/countries";
 import { runWpCheck } from "@/lib/wpcheck-verify.functions";
+import { LAST_RESULT_KEY } from "@/lib/wpcheck-result";
+import {
+  maskReference,
+  maskPassport,
+  maskDob,
+  validateWpCheck,
+  type WpCheckFieldErrors,
+} from "@/lib/wpcheck-form";
+
 
 const title = "WP Check — Work Agreement & Entitlement Verification";
 const description =
