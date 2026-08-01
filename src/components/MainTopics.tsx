@@ -15,7 +15,6 @@ const topics = [
       'Hiring employees',
       'Minimum rights of employees',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#005a50',
@@ -29,7 +28,6 @@ const topics = [
       'Rest and meal breaks',
       'Record keeping',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#2d6b8c',
@@ -43,7 +41,6 @@ const topics = [
       'Parental leave',
       'Bereavement leave',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#4a3a7a',
@@ -57,7 +54,6 @@ const topics = [
       'Harassment and bullying',
       'Drug and alcohol testing',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#7a3a28',
@@ -71,7 +67,6 @@ const topics = [
       'Employment Relations Authority',
       'Labour Inspectorate',
     ],
-    viewAllHref: '#',
   },
   {
     bgColor: '#5a5228',
@@ -85,7 +80,6 @@ const topics = [
       'Retirement',
       'Final pay',
     ],
-    viewAllHref: '#',
   },
 ];
 
