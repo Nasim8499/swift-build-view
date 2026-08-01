@@ -2,13 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import SiteLayout from "@/components/SiteLayout";
 import AgreementDocument from "@/components/AgreementDocument";
-import { getAgreement, type AgreementData } from "@/lib/wpcheck-docs";
+import { getAgreementById, type CloudAgreement } from "@/lib/wpcheck-cloud";
 
 const title = "WP Check agreement document | Employment New Zealand";
 const description = "Printable WP Check verified AEWV employment agreement document.";
 
-export const Route = createFileRoute("/documents/$id")({
-  ssr: false,
+export const Route = createFileRoute("/_authenticated/documents/$id")({
   head: () => ({
     meta: [
       { title },
@@ -25,12 +24,16 @@ export const Route = createFileRoute("/documents/$id")({
 
 function DocumentPage() {
   const { id } = Route.useParams();
-  const [doc, setDoc] = useState<AgreementData | null>(null);
+  const [doc, setDoc] = useState<CloudAgreement | null>(null);
   const [ready, setReady] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    setDoc(getAgreement(id));
-    setReady(true);
+    let active = true;
+    getAgreementById(id)
+      .then((d) => { if (active) { setDoc(d); setReady(true); } })
+      .catch(() => { if (active) { setError(true); setReady(true); } });
+    return () => { active = false; };
   }, [id]);
 
   return (
@@ -53,7 +56,9 @@ function DocumentPage() {
         {!ready && <p className="text-center text-sm text-gray-600">Loading document…</p>}
         {ready && !doc && (
           <p role="alert" className="mx-auto max-w-[820px] rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-            This document could not be found on this device. Documents are stored locally in the administrator portal.
+            {error
+              ? "We couldn't load this document. Please try again."
+              : "This document could not be found."}
           </p>
         )}
         {doc && <AgreementDocument a={doc} />}

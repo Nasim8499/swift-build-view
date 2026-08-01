@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
+import AccountLink from '@/components/AccountLink';
+
 
 export const navItems = [
   {
@@ -119,6 +121,8 @@ export default function Header() {
               News and updates
             </Link>
             <span className="hidden sm:inline text-gray-400">|</span>
+            <AccountLink />
+            <span className="hidden sm:inline text-gray-400">|</span>
 
             {/* WP Check — the single primary action, top utility bar only */}
             <Link
@@ -131,6 +135,7 @@ export default function Header() {
               WP Check
             </Link>
           </nav>
+
 
         </div>
       </div>
