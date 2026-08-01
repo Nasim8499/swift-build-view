@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import SiteLayout from "@/components/SiteLayout";
 import Reveal from "@/components/Reveal";
-import { LAST_RESULT_KEY, type StoredResult } from "@/lib/wpcheck-result";
+import { LAST_RESULT_KEY, LAST_VALUES_KEY, type StoredResult, type StoredValues } from "@/lib/wpcheck-result";
 
 const title = "WP Check results explained | Verified, Further review, Not found";
 const description =
@@ -69,11 +69,14 @@ const OUTCOMES = [
 
 function ResultPage() {
   const [stored, setStored] = useState<StoredResult | null>(null);
+  const [lastValues, setLastValues] = useState<StoredValues | null>(null);
 
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(LAST_RESULT_KEY);
       if (raw) setStored(JSON.parse(raw) as StoredResult);
+      const rawValues = sessionStorage.getItem(LAST_VALUES_KEY);
+      if (rawValues) setLastValues(JSON.parse(rawValues) as StoredValues);
     } catch {
       setStored(null);
     }
@@ -108,10 +111,32 @@ function ResultPage() {
                 <div><dt className="inline font-semibold">Country of documents: </dt><dd className="inline">{stored.country}</dd></div>
                 <div><dt className="inline font-semibold">Checked: </dt><dd className="inline">{new Date(stored.checkedAt).toLocaleString("en-NZ")}</dd></div>
               </dl>
-              <h3 className="mt-5 font-bold text-gray-900">Your next steps</h3>
+              <h3 className="mt-5 font-bold text-gray-900">Your next step checklist</h3>
               <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-gray-800">
                 {active.steps.map((s) => <li key={s}>{s}</li>)}
               </ol>
+
+              {lastValues && (
+                <div className="mt-5 rounded-lg border border-white/70 bg-white/80 p-4">
+                  <h3 className="text-sm font-bold text-gray-900">Run this check again</h3>
+                  <p className="mt-1 text-xs text-gray-600">
+                    Your last entries are kept in this browser session only. Resubmit to re-run the same check,
+                    or edit a detail first if something was mistyped.
+                  </p>
+                  <dl className="mt-3 grid grid-cols-1 gap-1 text-xs text-gray-700 sm:grid-cols-2">
+                    <div><dt className="inline font-semibold">Reference: </dt><dd className="inline">{lastValues.reference}</dd></div>
+                    <div><dt className="inline font-semibold">Passport: </dt><dd className="inline">{lastValues.passport}</dd></div>
+                    <div><dt className="inline font-semibold">Date of birth: </dt><dd className="inline">{lastValues.dob}</dd></div>
+                    <div><dt className="inline font-semibold">Country: </dt><dd className="inline">{lastValues.country}</dd></div>
+                  </dl>
+                  <Link
+                    to="/wp-check"
+                    className="mt-3 inline-flex items-center rounded bg-[#006272] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#004f5c]"
+                  >
+                    Resubmit with these details
+                  </Link>
+                </div>
+              )}
             </div>
           </Reveal>
         ) : (

@@ -40,6 +40,8 @@ export type Database = {
           checked_at: string
           country: string
           id: string
+          latency_ms: number | null
+          provider_error: string | null
           reference: string
           status: string
         }
@@ -47,6 +49,8 @@ export type Database = {
           checked_at?: string
           country: string
           id?: string
+          latency_ms?: number | null
+          provider_error?: string | null
           reference: string
           status: string
         }
@@ -54,6 +58,8 @@ export type Database = {
           checked_at?: string
           country?: string
           id?: string
+          latency_ms?: number | null
+          provider_error?: string | null
           reference?: string
           status?: string
         }

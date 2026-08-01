@@ -7,6 +7,8 @@ export type AuditEntry = {
   country: string;
   status: "verified" | "review" | "not_found";
   checked_at: string;
+  latency_ms: number | null;
+  provider_error: string | null;
 };
 
 /** Admin-only: the most recent WP Check verification requests and their outcome. */
@@ -21,7 +23,7 @@ export const listWpCheckAudit = createServerFn({ method: "GET" })
 
     const { data, error } = await context.supabase
       .from("wp_check_audit")
-      .select("id, reference, country, status, checked_at")
+      .select("id, reference, country, status, checked_at, latency_ms, provider_error")
       .order("checked_at", { ascending: false })
       .limit(200);
 

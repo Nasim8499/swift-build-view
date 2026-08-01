@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import SiteLayout from "@/components/SiteLayout";
 import { COUNTRIES } from "@/lib/countries";
 import { runWpCheck } from "@/lib/wpcheck-verify.functions";
-import { LAST_RESULT_KEY } from "@/lib/wpcheck-result";
+import { LAST_RESULT_KEY, LAST_VALUES_KEY, type StoredValues } from "@/lib/wpcheck-result";
 import {
   maskReference,
   maskPassport,
@@ -50,6 +50,17 @@ function WpCheckPage() {
   const [fieldErrors, setFieldErrors] = useState<WpCheckFieldErrors>({});
   const [values, setValues] = useState({ reference: "", passport: "", dob: "", country: "" });
   const check = useServerFn(runWpCheck);
+
+  // Prefill from a previous check so "Run this check again" works from the results page.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(LAST_VALUES_KEY);
+      if (raw) setValues(JSON.parse(raw) as StoredValues);
+    } catch {
+      // Prefill is optional.
+    }
+  }, []);
+
   const mutation = useMutation({ mutationFn: check });
   const result = mutation.data;
 
@@ -80,6 +91,7 @@ function WpCheckPage() {
         onSuccess: (data) => {
           try {
             sessionStorage.setItem(LAST_RESULT_KEY, JSON.stringify(data));
+            sessionStorage.setItem(LAST_VALUES_KEY, JSON.stringify(values));
           } catch {
             // Session storage is optional; the result is shown inline regardless.
           }
