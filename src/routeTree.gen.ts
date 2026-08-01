@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as WpCheckRouteImport } from './routes/wp-check'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as TopicsIndexRouteImport } from './routes/topics.index'
 import { Route as TopicsTopicRouteImport } from './routes/topics.$topic'
 import { Route as AuthenticatedDocumentsIdRouteImport } from './routes/_authenticated/documents.$id'
@@ -43,6 +44,11 @@ const WpCheckRoute = WpCheckRouteImport.update({
   path: '/wp-check',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const TopicsIndexRoute = TopicsIndexRouteImport.update({
   id: '/topics/',
   path: '/topics/',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/topics/': typeof TopicsIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/topics': typeof TopicsIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/news': typeof NewsRoute
   '/wp-check': typeof WpCheckRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/topics/': typeof TopicsIndexRoute
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/news'
     | '/wp-check'
+    | '/admin'
     | '/topics/$topic'
     | '/topics/'
     | '/documents/$id'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/news'
     | '/wp-check'
+    | '/admin'
     | '/topics/$topic'
     | '/topics'
     | '/documents/$id'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/news'
     | '/wp-check'
+    | '/_authenticated/admin'
     | '/topics/$topic'
     | '/topics/'
     | '/_authenticated/documents/$id'
@@ -179,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WpCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/topics/': {
       id: '/topics/'
       path: '/topics'
@@ -211,10 +230,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDocumentsIdRoute: typeof AuthenticatedDocumentsIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDocumentsIdRoute: AuthenticatedDocumentsIdRoute,
 }
 
