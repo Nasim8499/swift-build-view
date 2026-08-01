@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { AgreementData } from "@/lib/wpcheck-docs";
+import type { Json } from "@/integrations/supabase/types";
 
 export type CloudUpload = {
   id: string;
@@ -119,7 +120,7 @@ export async function createAgreement(a: AgreementData): Promise<string> {
       kind: "generated",
       name: a.employeeName || "AEWV agreement",
       reference: a.reference || null,
-      agreement: a as unknown as Record<string, unknown>,
+      agreement: a as unknown as Json,
       created_by: userData.user?.id ?? null,
     })
     .select("id")
