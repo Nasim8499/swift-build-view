@@ -304,9 +304,12 @@ function AdminDashboard({ email, onSignOut }: { email: string; onSignOut: () => 
             )}
           </div>
         </div>
-      ) : (
+      ) : tab === "generate" ? (
         <GenerateTab agreements={agreements} onChanged={refresh} />
+      ) : (
+        <AuditTab />
       )}
+
     </SiteLayout>
   );
 }
