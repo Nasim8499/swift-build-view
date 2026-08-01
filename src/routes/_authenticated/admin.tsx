@@ -416,3 +416,84 @@ function GenerateTab({ agreements, onChanged }: { agreements: CloudAgreement[]; 
     </div>
   );
 }
+
+const AUDIT_LABELS: Record<string, { label: string; tone: string }> = {
+  verified: { label: "Verified", tone: "bg-green-100 text-green-800" },
+  review: { label: "Further review", tone: "bg-amber-100 text-amber-800" },
+  not_found: { label: "Not found", tone: "bg-red-100 text-red-800" },
+};
+
+function AuditTab() {
+  const load = useServerFn(listWpCheckAudit);
+  const { data, isPending, isError, refetch, isFetching } = useQuery({
+    queryKey: ["wp-check-audit"],
+    queryFn: () => load(),
+  });
+
+  return (
+    <div className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">WP Check audit log</h2>
+          <p className="mt-1 text-sm text-gray-600">
+            Every verification request, with the reference checked and the result. No personal details are stored.
+          </p>
+        </div>
+        <button
+          onClick={() => void refetch()}
+          className="rounded border border-gray-400 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+        >
+          {isFetching ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
+
+      {isPending ? (
+        <div className="mt-6 space-y-2">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-11 animate-pulse rounded bg-gray-100" />
+          ))}
+        </div>
+      ) : isError ? (
+        <p className="mt-6 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+          We couldn&apos;t load the audit log. Please try refreshing.
+        </p>
+      ) : (data ?? []).length === 0 ? (
+        <p className="mt-6 rounded border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-600">
+          No WP Check requests have been recorded yet.
+        </p>
+      ) : (
+        <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200">
+          <table className="w-full min-w-[560px] text-left text-sm">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-600">
+              <tr>
+                <th scope="col" className="px-4 py-3">Checked</th>
+                <th scope="col" className="px-4 py-3">Reference</th>
+                <th scope="col" className="px-4 py-3">Country of documents</th>
+                <th scope="col" className="px-4 py-3">Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(data ?? []).map((row) => {
+                const meta = AUDIT_LABELS[row.status] ?? { label: row.status, tone: "bg-gray-100 text-gray-800" };
+                return (
+                  <tr key={row.id} className="border-t border-gray-200">
+                    <td className="whitespace-nowrap px-4 py-3 text-gray-700">
+                      {new Date(row.checked_at).toLocaleString("en-NZ")}
+                    </td>
+                    <td className="px-4 py-3 font-semibold text-gray-900">{row.reference}</td>
+                    <td className="px-4 py-3 text-gray-700">{row.country}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block rounded px-2 py-0.5 text-xs font-semibold ${meta.tone}`}>
+                        {meta.label}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
