@@ -474,6 +474,8 @@ function AuditTab() {
                 <th scope="col" className="px-4 py-3">Reference</th>
                 <th scope="col" className="px-4 py-3">Country of documents</th>
                 <th scope="col" className="px-4 py-3">Result</th>
+                <th scope="col" className="px-4 py-3">Latency</th>
+                <th scope="col" className="px-4 py-3">Provider error</th>
               </tr>
             </thead>
             <tbody>
