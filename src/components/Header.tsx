@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
+import AccountLink from '@/components/AccountLink';
+
 
 export const navItems = [
   {
