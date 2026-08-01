@@ -11,10 +11,11 @@ const description =
 type NewsSearch = { q: string; category: string };
 
 export const Route = createFileRoute("/news")({
-  validateSearch: (search: Record<string, unknown>): NewsSearch => ({
+  validateSearch: (search: Partial<NewsSearch> & Record<string, unknown>): NewsSearch => ({
     q: typeof search['q'] === "string" ? search['q'] : "",
     category: typeof search['category'] === "string" ? search['category'] : "All",
   }),
+
   head: () => ({
     meta: [
       { title },
