@@ -2,11 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import SiteLayout from "@/components/SiteLayout";
 import HeroBanner from "@/components/HeroBanner";
 import QuickLinks from "@/components/QuickLinks";
+import StatsBar from "@/components/StatsBar";
+import AudiencePaths from "@/components/AudiencePaths";
 import MainTopics from "@/components/MainTopics";
+import MinimumRights from "@/components/MinimumRights";
+import WpCheckSteps from "@/components/WpCheckSteps";
 import MigrantWorkers from "@/components/MigrantWorkers";
+import PayRates from "@/components/PayRates";
 import NewsSection from "@/components/NewsSection";
-import ToolsSection from "@/components/ToolsSection";
 import WorkPermitSection from "@/components/WorkPermitSection";
+import EmployerObligations from "@/components/EmployerObligations";
+import FaqSection from "@/components/FaqSection";
+import ToolsSection from "@/components/ToolsSection";
+import SupportContact from "@/components/SupportContact";
 
 const title = "Employment Services Portal | Jobs, Rights & Support";
 const description =
@@ -31,12 +39,19 @@ function Index() {
     <SiteLayout>
       <HeroBanner />
       <QuickLinks />
+      <StatsBar />
+      <AudiencePaths />
       <MainTopics />
+      <MinimumRights />
+      <WpCheckSteps />
       <MigrantWorkers />
+      <PayRates />
       <NewsSection />
       <WorkPermitSection />
+      <EmployerObligations />
+      <FaqSection />
       <ToolsSection />
-
+      <SupportContact />
     </SiteLayout>
   );
 }

@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router';
+
 export default function HeroBanner() {
   return (
     <section className="bg-[#00707f] relative overflow-hidden">
