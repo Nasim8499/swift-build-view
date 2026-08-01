@@ -19,40 +19,6 @@ const earlyResolutionFeatures = [
 export default function ToolsSection() {
   return (
     <>
-      {/* Tools & Resources */}
-      <section className="py-12 bg-[#f5f7f8]">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl md:text-[1.75rem] font-bold text-gray-900 mb-1">Tools and resources</h2>
-          <p className="text-gray-600 text-sm mb-8">
-            Useful calculators, builders and services to help with employment.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tools.map((tool) => (
-              <a
-                key={tool.title}
-                href={tool.href}
-                className="group bg-white border border-gray-200 rounded-lg p-5 hover:border-[#006272] hover:shadow-md transition-all flex flex-col"
-              >
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <div className="bg-[#e6f4f6] p-2.5 rounded-lg flex-shrink-0 group-hover:bg-[#c5e3e8] transition-colors">
-                    {tool.icon}
-                  </div>
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${tool.tagBg}`}>
-                    {tool.tag}
-                  </span>
-                </div>
-                <h3 className="font-bold text-gray-900 group-hover:text-[#006272] transition-colors text-[15px] leading-snug mb-2">
-                  {tool.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed flex-1">{tool.description}</p>
-                <div className="flex items-center gap-1.5 text-[#006272] text-[13px] font-semibold mt-4">
-                  Get started <ArrowIcon />
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Early Resolution Banner */}
       <section className="bg-[#e6f4f6] border-y border-[#b2d8de] py-10">

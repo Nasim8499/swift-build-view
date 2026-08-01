@@ -6,6 +6,7 @@ import MainTopics from "@/components/MainTopics";
 import MigrantWorkers from "@/components/MigrantWorkers";
 import NewsSection from "@/components/NewsSection";
 import ToolsSection from "@/components/ToolsSection";
+import WorkPermitSection from "@/components/WorkPermitSection";
 
 const title = "Employment Services Portal | Jobs, Rights & Support";
 const description =
@@ -33,7 +34,9 @@ function Index() {
       <MainTopics />
       <MigrantWorkers />
       <NewsSection />
+      <WorkPermitSection />
       <ToolsSection />
+
     </SiteLayout>
   );
 }
