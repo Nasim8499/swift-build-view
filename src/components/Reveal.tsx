@@ -23,7 +23,7 @@ export default function Reveal({
           if (entry.isIntersecting) { setShown(true); io.disconnect(); }
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+      { rootMargin: "120px 0px 120px 0px", threshold: 0 },
     );
     io.observe(el);
     return () => io.disconnect();
