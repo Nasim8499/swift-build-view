@@ -173,12 +173,15 @@ export default function Footer() {
                 ].map((social) => (
                   <a
                     key={social.label}
-                    href="#"
+                    href={`https://www.${social.label.toLowerCase()}.com`}
+                    target="_blank"
+                    rel="noreferrer"
                     aria-label={social.label}
                     className="w-9 h-9 bg-gray-700 hover:bg-[#006272] rounded-full flex items-center justify-center text-gray-300 hover:text-white transition-colors"
                   >
                     {social.icon}
                   </a>
+
                 ))}
               </div>
               <div className="mt-2">
@@ -207,11 +210,12 @@ export default function Footer() {
                 <ul className="space-y-1.5">
                   {section.links.map((link) => (
                     <li key={link}>
-                      <a href="#" className="text-gray-400 text-xs hover:text-white hover:underline transition-colors leading-relaxed">
+                      <Link to="/topics" className="text-gray-400 text-xs hover:text-white hover:underline transition-colors leading-relaxed">
                         {link}
-                      </a>
+                      </Link>
                     </li>
                   ))}
+
                 </ul>
               </div>
             ))}
@@ -223,9 +227,15 @@ export default function Footer() {
               {legalLinks.map((link, idx) => (
                 <span key={link} className="flex items-center">
                   {idx > 0 && <span className="text-gray-600 text-xs mx-2">|</span>}
-                  <a href="#" className="text-gray-500 text-xs hover:text-gray-300 hover:underline transition-colors">
+                  <a
+                    href="https://www.mbie.govt.nz"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-gray-500 text-xs hover:text-gray-300 hover:underline transition-colors"
+                  >
                     {link}
                   </a>
+
                 </span>
               ))}
             </div>
