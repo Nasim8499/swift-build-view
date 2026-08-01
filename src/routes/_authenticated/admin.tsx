@@ -493,6 +493,18 @@ function AuditTab() {
                         {meta.label}
                       </span>
                     </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-gray-700">
+                      {typeof row.latency_ms === "number" ? `${row.latency_ms} ms` : "—"}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-gray-600">
+                      {row.provider_error ? (
+                        <span className="rounded bg-red-50 px-2 py-0.5 font-medium text-red-800">
+                          {row.provider_error}
+                        </span>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                   </tr>
                 );
               })}
