@@ -217,17 +217,21 @@ function WpCheckPage() {
 function Field({
   id,
   label,
-  type = "text",
-  required,
   placeholder,
-  max,
+  hint,
+  value,
+  error,
+  inputMode,
+  onChange,
 }: {
   id: string;
   label: string;
-  type?: string;
-  required?: boolean;
   placeholder?: string;
-  max?: string;
+  hint?: string;
+  value: string;
+  error?: string | undefined;
+  inputMode?: "text" | "numeric";
+  onChange: (value: string) => void;
 }) {
   return (
     <div>
@@ -237,12 +241,24 @@ function Field({
       <input
         id={id}
         name={id}
-        type={type}
-        required={required}
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        max={max}
-        className="w-full h-11 rounded border border-gray-400 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272]"
+        inputMode={inputMode}
+        autoComplete="off"
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
+        className={`w-full h-11 rounded border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#006272] ${
+          error ? "border-red-500" : "border-gray-400"
+        }`}
       />
+      {error ? (
+        <p id={`${id}-error`} className="mt-1 text-xs font-semibold text-red-700">{error}</p>
+      ) : hint ? (
+        <p id={`${id}-hint`} className="mt-1 text-xs text-gray-500">{hint}</p>
+      ) : null}
     </div>
   );
+
 }
