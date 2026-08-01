@@ -105,14 +105,23 @@ export default function Header() {
           </a>
 
           <nav className="flex items-center gap-2 text-xs shrink-0" aria-label="Utility navigation">
-            {['About us', 'Online learning', 'Contact us'].map((label) => (
+            {[
+              { label: 'About us', href: 'https://www.mbie.govt.nz' },
+              { label: 'Online learning', href: 'https://www.business.govt.nz' },
+              { label: 'Contact us', href: 'tel:0800209020' },
+            ].map(({ label, href }) => (
               <span key={label} className="hidden lg:flex items-center gap-2">
-                <a href="https://www.mbie.govt.nz" target="_blank" rel="noreferrer" className="text-[#006272] hover:underline">
+                <a
+                  href={href}
+                  {...(href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  className="text-[#006272] hover:underline"
+                >
                   {label}
                 </a>
                 <span className="text-gray-400">|</span>
               </span>
             ))}
+
             <Link to="/topics" className="hidden sm:inline text-[#006272] hover:underline">
               Topics
             </Link>
