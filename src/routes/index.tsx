@@ -15,6 +15,11 @@ import EmployerObligations from "@/components/EmployerObligations";
 import FaqSection from "@/components/FaqSection";
 import ToolsSection from "@/components/ToolsSection";
 import SupportContact from "@/components/SupportContact";
+import EmploymentDataSection from "@/components/EmploymentDataSection";
+import SectorSpotlight from "@/components/SectorSpotlight";
+import WorkJourney from "@/components/WorkJourney";
+import Reveal from "@/components/Reveal";
+
 
 const title = "Employment Services Portal | Jobs, Rights & Support";
 const description =
